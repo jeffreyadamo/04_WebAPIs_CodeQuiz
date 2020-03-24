@@ -10,21 +10,39 @@
 
 </head>
 <body>
-    <div class="jumbotron">
-        <h1 class="display-4">Welcome to Code Quiz!</h1>
-        <p class="lead">Can you answer 3 questions based on what you've learned in BootCamp so far?</p>
-        <hr class="my-4">
-        <p>View High Scores</p>
-        <a class="btn btn-primary btn-lg startQuiz" href="#" role="button">Start Quiz</a>
-      </div>
+    <header>
+        <a href="#">View high scores</a>
+        <div class="timer">Time: 60</div>
+    </header>
+
     <div class="container">
-        <div class="btn-group-vertical" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-secondary">Answer A)</button>
-            <button type="button" class="btn btn-secondary">Answer B)</button>
-            <button type="button" class="btn btn-secondary">Answer C)</button>
-            <button type="button" class="btn btn-secondary">Answer D)</button>
-          </div>
+        <h1>Coding Quiz Challenge</h1>
+        <p>
+            Try to answer the following code-related questions withing the time limit. Keep in mind that incorrect answers will penalize your scoretime by ten seconds!
+        </p>
+        <div class="questions">
+            <a class="btn btn-primary btn-lg startQuiz" href="#" role="button">Start Quiz</a>
+        </div>
+
     </div>
+
+   
+<!-- 
+        <div class="row">
+            <div class="col-md-3">
+                <p>Select Answer</p>
+                <div class="btn-group-vertical" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-secondary buttonA">Answer A)</button>
+                    <button type="button" class="btn btn-secondary buttonB">Answer B)</button>
+                    <button type="button" class="btn btn-secondary buttonC">Answer C)</button>
+                    <button type="button" class="btn btn-secondary buttonD">Answer D)</button>
+                  </div>
+            </div>
+
+        </div>
+
+         -->
+
   
 
     <script src="script.js"></script>

@@ -1,6 +1,10 @@
 # 04_WebAPIs_CodeQuiz
 Week 4's Homework: CodeQuiz (due 3/28/2020)
 
+# Link to CodeQuiz website:
+[https://jeffreyadamo.github.io/04_WebAPIs_CodeQuiz/index.html](https://jeffreyadamo.github.io/04_WebAPIs_CodeQuiz/index.html)
+
+
 ## User Story
 
 ```

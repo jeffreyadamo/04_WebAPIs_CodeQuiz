@@ -1,5 +1,16 @@
 .container {
-    margin: 0;
-    padding: 4rem 2rem;
+    width: 60%;
+    margin: auto;
+    padding: 100px 0px;
+    text-align: center;
+    /* padding: 4rem 2rem; */
     /*keeps answers on same indentation at jumbotron at <578px make padding: 2rem 1rem; */
+}
+
+.timer {
+    float: right;
+}
+
+header {
+    padding: 0px 5px 0px 5px;
 }
