@@ -14,3 +14,8 @@
 header {
     padding: 0px 5px 0px 5px;
 }
+
+.questionStyle {
+    text-align: left;
+    padding-top: 5px;
+}
