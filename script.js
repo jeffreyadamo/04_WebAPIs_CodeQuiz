@@ -121,17 +121,33 @@ function question1() {
         newDiv.className =  "answer" + [i] + " questionStyle"; //new div created will have 2 classes, "answer[#]" and a style class = "questionstyle"//
         newDiv.innerHTML = "<button type='button' class='btn btn-primary'>" + q1[i] +"</button>";
         container.appendChild(newDiv);
-        // newDiv.setAttribute("class", "questionStyle");
     }
-    // correctAnswer();
+    correctAnswer();
     // wrongAnswer();
 }
 
-//Okay, now I have the first question. The next parts required are to 1) listen for the correct button answer 2) store the score//
+//Okay, now I have the first question. The next parts required are to 1) listen for the correct button answer 2) store the score 3) loop through series of questions 4)//
 
-// function correctAnswer() {
-//     newDiv.button.addEventListener("click", function () {
-//         alert("button clicked");
-//     });
-// }
+// var score = localStorage.getItem("score");
+var score = 0;
+localStorage.setItem("score", score);
 
+function correctAnswer() {
+    console.log("The correct answer for Question 1 is " + correctAnswers[0]);
+    //"correctAnswers[0]" is the name of the div to listen for//
+    correctDiv = document.querySelector("." + correctAnswers[0]);
+    console.log(correctDiv);
+    
+
+    correctDiv.addEventListener("click", function(){
+        
+        localStorage.setItem("score", score + 10);
+        alert("Correct!: Current Score is: " + localStorage.getItem("score")); //this is going to have to be switched to inserted HTML to match design//
+        
+    });
+    
+}
+
+
+
+// part 4) Entering initials into final score and being able to retrieve them after refresh
