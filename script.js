@@ -10,6 +10,7 @@ var buttonA = document.querySelector(".buttonA");
 var buttonB = document.querySelector(".buttonB");
 var buttonC = document.querySelector(".buttonC");
 var buttonD = document.querySelector(".buttonD");
+var index=0;
 
 //Arrays of questions with answers//
 var q1 = [ 
@@ -53,6 +54,28 @@ var q5 = [
 var correctAnswers = ["answer3", "answer3", "answer4", "answer4", "answer4"];
     
 
+var questionsArray = [
+    {
+        Question: "1: Commonly used data types DO NOT include:",
+        answers:
+           [ "1. strings",
+            "2. booleans",
+            "3. alerts", //corrent
+            "4. numbers"],
+        correctOption: "3. alerts"
+    },
+    {
+        Question: "2: The condition of an if / else statement is enclosed within ________",
+        answers:
+          [ "1. quotes",
+           "2. curly brackets",
+           "3. parentheses", //correct
+           "4. square brackets"]
+        ,
+        correctOption: "3. parentheses"
+    }
+]
+
 // This may need to be set up in another array format:
 
 // var quizQuestions = [
@@ -62,6 +85,8 @@ var correctAnswers = ["answer3", "answer3", "answer4", "answer4", "answer4"];
 //     "Question 4: String values must be enclosed within ________ when being assigned to variables.",
 //     "Question 5: A very useful tool used during development and debugging for printing content to the debugger is:",
 // ];
+
+
 
 
 
@@ -112,14 +137,16 @@ function question1() {
     console.log("still working, insert question now"); //spot check to see if broken
 
     // container.innerHTML = "<h2>Insert Questions here</h2>";
-    container.innerHTML = "<h2>" + q1[0] +"</h2>";
+    container.innerHTML = "<h2>" +questionsArray[index].Question +"</h2>";
     container.style.textAlign = "left"; //question1 in array with h2 tag
 
-    //seems like I should be able to create a for loop for inserting the 4 questions. Let's start with 1 with a button    
-    for (var i = 1; i < q1.length; i++) {
+    //seems like I should be able to create a for loop for inserting the 4 questions. Let's start with 1 with a button
+    
+    console.log(questionsArray[index].answers.length);    
+    for (var i = 0; i < questionsArray[index].answers.length; i++) {
         var newDiv = document.createElement("div");
         newDiv.className =  "answer" + [i] + " questionStyle"; //new div created will have 2 classes, "answer[#]" and a style class = "questionstyle"//
-        newDiv.innerHTML = "<button type='button' class='btn btn-primary'>" + q1[i] +"</button>";
+        newDiv.innerHTML = "<button type='button' class='btn btn-primary'>" + questionsArray[index].answers[i] +"</button>";
         container.appendChild(newDiv);
     }
     correctAnswer();
@@ -133,16 +160,28 @@ var score = 0;
 localStorage.setItem("score", score);
 
 function correctAnswer() {
-    console.log("The correct answer for Question 1 is " + correctAnswers[0]);
-    //"correctAnswers[0]" is the name of the div to listen for//
-    correctDiv = document.querySelector("." + correctAnswers[0]);
-    console.log(correctDiv);
+
+
+
+    // console.log("The correct answer for Question 1 is " + correctAnswers[0]);
+    // //"correctAnswers[0]" is the name of the div to listen for//
+    // correctDiv = document.querySelector("." + correctAnswers[0]);
+    // console.log(correctDiv);
     
 
-    correctDiv.addEventListener("click", function(){
-        
-        localStorage.setItem("score", score + 10);
-        alert("Correct!: Current Score is: " + localStorage.getItem("score")); //this is going to have to be switched to inserted HTML to match design//
+    container.addEventListener("click", function(event){
+        console.log(event.target.textContent);
+        if (event.target.textContent === questionsArray[index].correctOption) {
+            console.log("correct answer chosen");
+
+        } else {
+            console.log("incorrect answer");
+        }
+        index++
+        question1()
+
+        // localStorage.setItem("score", score + 10);
+        // alert("Correct!: Current Score is: " + localStorage.getItem("score")); //this is going to have to be switched to inserted HTML to match design//
         
     });
     
