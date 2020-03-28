@@ -1,7 +1,10 @@
+header {
+    padding: 0px 5px 100px 5px;
+}
+
 .container {
     width: 60%;
     margin: auto;
-    padding: 100px 0px;
     text-align: center;
     /* padding: 4rem 2rem; */
     /*keeps answers on same indentation at jumbotron at <578px make padding: 2rem 1rem; */
@@ -11,11 +14,13 @@
     float: right;
 }
 
-header {
-    padding: 0px 5px 0px 5px;
-}
-
 .questionStyle {
     text-align: left;
     padding-top: 5px;
+}
+.buttons {
+    text-align: left;
+    padding-top: 5px;
+    width: 60%;
+    margin: auto;
 }

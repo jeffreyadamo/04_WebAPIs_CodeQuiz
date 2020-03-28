@@ -1,71 +1,29 @@
-
 // Set a few variables to begin
 var start = document.querySelector(".btn-lg");
 var timerEl = document.querySelector(".timer");
 var timeRemaining = 60;
 var timerStart;
-var questionsEl = document.querySelector(".container").firstElementChild;
 var container = document.querySelector(".container");
-var buttonA = document.querySelector(".buttonA");
-var buttonB = document.querySelector(".buttonB");
-var buttonC = document.querySelector(".buttonC");
-var buttonD = document.querySelector(".buttonD");
+var buttons = document.querySelector(".buttons");
+var submit = document.querySelector(".submit");
 var index=0;
+var score = 0;
+var navEl = document.querySelector(".goAway");
+localStorage.setItem("score", score);
 
-//Arrays of questions with answers//
-var q1 = [ 
-    "Question 1: Commonly used data types DO NOT include:",
-    "1. strings",
-    "2. booleans",
-    "3. alerts", //corrent
-    "4. numbers",
-];
-
-var q2 = [ 
-    "Question 2: The condition of an if / else statement is enclosed within ________",
-    "1. quotes",
-    "2. curly brackets",
-    "3. parentheses", //correct
-    "4. square brackets",
-];
-
-var q3 = [ 
-    "Question 3: Arrays in JavaScript can be used to store ________",
-    "1. numbers and strings",
-    "2. other arrays",
-    "3. booleans",
-    "4. all of the above", //correct
-];
-var q4 = [ 
-    "Question 4: String values must be enclosed within ________ when being assigned to variables.",
-    "1. commas",
-    "2. curly brackets",
-    "3. quotes",
-    "4. parentheses", //correct
-];
-var q5 = [ 
-    "Question 5: A very useful tool used during development and debugging for printing content to the debugger is:",
-    "1. JavaScript",
-    "2. terminal/bash",
-    "3. for loops",
-    "4. console.log", //correct
-];
-
-var correctAnswers = ["answer3", "answer3", "answer4", "answer4", "answer4"];
-    
-
+// Set an array as a variable that includes questions, answers, and correct answers:
 var questionsArray = [
     {
-        Question: "1: Commonly used data types DO NOT include:",
+        question: "Question 1: Commonly used data types DO NOT include:",
         answers:
            [ "1. strings",
             "2. booleans",
-            "3. alerts", //corrent
+            "3. alerts", //correct
             "4. numbers"],
         correctOption: "3. alerts"
     },
     {
-        Question: "2: The condition of an if / else statement is enclosed within ________",
+        question: "Question 2: The condition of an if / else statement is enclosed within ________",
         answers:
           [ "1. quotes",
            "2. curly brackets",
@@ -73,120 +31,152 @@ var questionsArray = [
            "4. square brackets"]
         ,
         correctOption: "3. parentheses"
+    },
+    {
+        question: "Question 3: Arrays in JavaScript can be used to store ________",
+        answers:
+          [ "1. numbers and strings",
+          "2. other arrays",
+          "3. booleans",
+          "4. all of the above"] //correct
+        ,
+        correctOption: "4. all of the above"
+    },
+    {
+        question: "Question 4: String values must be enclosed within ________ when being assigned to variables.",
+        answers:
+          [ "1. commas",
+          "2. curly brackets",
+          "3. quotes",
+          "4. parentheses"] //correct
+        ,
+        correctOption: "4. parentheses"
+    },
+    {
+        question: "Question 5: A very useful tool used during development and debugging for printing content to the debugger is:",
+        answers:
+          [ "1. JavaScript",
+          "2. terminal/bash",
+          "3. for loops", //correct
+          "4. console.log"]
+        ,
+        correctOption: "3. for loops"
     }
 ]
 
-// This may need to be set up in another array format:
-
-// var quizQuestions = [
-//     "Question 1: Commonly used data types DO NOT include:",
-//     "Question 2: The condition of an if / else statement is enclosed within ________",
-//     "Question 3: Arrays in JavaScript can be used to store ________",
-//     "Question 4: String values must be enclosed within ________ when being assigned to variables.",
-//     "Question 5: A very useful tool used during development and debugging for printing content to the debugger is:",
-// ];
-
-
-
-
-
-
-
-// Make sure things are talking
+// Make sure things are talking:
 console.log("Connected: not broken yet.");
+console.log("Starting index is " + index);
+console.log("-------------");
 
-// Use the button in the jumbotron to initialize the quiz timer
+// Using addEventListener on "Start Quiz" button to start the timer:
 function startQuiz () {
-
-    start.addEventListener("click", function(event) {  //listens for button click on StartQuiz in jumbotron
-        
-        if(timeRemaining < 60) { //prevents the button from functioning after timer begins
+    start.addEventListener("click", function(event) {  
+         //prevent the button from functioning after timer begins
+        if(timeRemaining < 60) {
             event.preventDefault();}
        
         else {
          timerEl.textContent = "Time: " + timeRemaining; //Change text of button to 
-         console.log("Time remaining: " + timeRemaining); //keep track of where we are at
+         console.log("Timer started; Time remaining: " + timeRemaining); //keep track of where we are at
          timer(); //start function timer() which will countdown from timeRemaining
-         question1(); //insert questions starting at q1
+         insertQuestion(); //insert questions starting at q1
         }  
     });
-} // end startQuiz()
+} 
 
-// use function timer() to countdown from timeRemaining
+// Use function timer() to countdown from timeRemaining:
 function timer() {
     var timerInterval = setInterval(function() {
       timeRemaining--;
       timerEl.textContent = "Time: " + timeRemaining;
-      
-  
-      // this stops the timer//
+       // Stop the timer once it reaches 0 and send a message.//
       if(timeRemaining <= 0) {
         clearInterval(timerInterval); 
-        
         timerEl.textContent = "Time's up!";
-        // timerEl.disabled = true; //I don't want to keep looping another second off
-      }
+        enterScore();
+        }
     }, 1000); 
 }
 
-startQuiz();
-
-//now I need to prompt the user with a quiz. Let's make an array of Questions and an array of Answers
-
-function question1() {
+//Now I need to prompt the user with a question.
+function insertQuestion() {
     console.log("still working, insert question now"); //spot check to see if broken
+    console.log("Current index is " + index);
 
-    // container.innerHTML = "<h2>Insert Questions here</h2>";
-    container.innerHTML = "<h2>" +questionsArray[index].Question +"</h2>";
-    container.style.textAlign = "left"; //question1 in array with h2 tag
+    // Use innerHTML to replace the contents of the container with a question. We want to use a different size font, so use a <h2> tag
+    // Access the first question in questionsArray using [index] which starts as [0]. We will index++ after each question cycle.
+    container.innerHTML = "<h2>" +questionsArray[index].question +"</h2>";
+    container.style.textAlign = "left";
 
-    //seems like I should be able to create a for loop for inserting the 4 questions. Let's start with 1 with a button
-    
-    console.log(questionsArray[index].answers.length);    
-    for (var i = 0; i < questionsArray[index].answers.length; i++) {
+    console.log("Array length for answers is still:" + questionsArray[index].answers.length);    
+
+    // Create a for loop to populate the "buttons" <div> defined in the HTML with a button
+    for (var j = 0; j < questionsArray[index].answers.length; j++) {
         var newDiv = document.createElement("div");
-        newDiv.className =  "answer" + [i] + " questionStyle"; //new div created will have 2 classes, "answer[#]" and a style class = "questionstyle"//
-        newDiv.innerHTML = "<button type='button' class='btn btn-primary'>" + questionsArray[index].answers[i] +"</button>";
-        container.appendChild(newDiv);
-    }
-    correctAnswer();
-    // wrongAnswer();
-}
+        //new div created will have 2 classes, "answer[#]" and a style class = "questionStyle"//
+        newDiv.className =  "answer" + [j] + " questionStyle"; 
+        // Use innerHTML to insert a Bootstrap button pulling the text from the "questionsArray" listing the possible answers
+        newDiv.innerHTML = "<button type='button' class='btn btn-primary'>" + questionsArray[index].answers[j] +"</button>";
+        buttons.appendChild(newDiv);
+    };
+    
+    console.log("index after for loop is" + index);
+    console.log("questionsArray.length is" + questionsArray.length);
 
+
+    // only insert questions until questionsArray is complete.
+    if (index < questionsArray.length) {
+        correctAnswer();
+    // once all the answers are complete, we need to enter our score.
+    } else if (index = questionsArray.length) {
+        alert("game over");
+        enterScore;
+    }
+}
 //Okay, now I have the first question. The next parts required are to 1) listen for the correct button answer 2) store the score 3) loop through series of questions 4)//
 
-// var score = localStorage.getItem("score");
-var score = 0;
-localStorage.setItem("score", score);
-
 function correctAnswer() {
-
-
-
-    // console.log("The correct answer for Question 1 is " + correctAnswers[0]);
-    // //"correctAnswers[0]" is the name of the div to listen for//
-    // correctDiv = document.querySelector("." + correctAnswers[0]);
-    // console.log(correctDiv);
-    
-
-    container.addEventListener("click", function(event){
+    buttons.addEventListener("click", function(event){
         console.log(event.target.textContent);
+
         if (event.target.textContent === questionsArray[index].correctOption) {
             console.log("correct answer chosen");
-
+            localStorage.setItem("score", score + 10);
+  
         } else {
             console.log("incorrect answer");
-        }
-        index++
-        question1()
+            timeRemaining = timeRemaining - 10
+            }
+    event.preventDefault();
+    index++;
+    insertQuestion();
 
-        // localStorage.setItem("score", score + 10);
-        // alert("Correct!: Current Score is: " + localStorage.getItem("score")); //this is going to have to be switched to inserted HTML to match design//
-        
     });
+ 
+    return;
+}
+
+function enterScore() {
+    // document.parentNode.removeChild(navEl);
+    container.innerHTML = "<h2>All Done!</h2><br>";
+    buttons.innerHTML = "Your final score is " + localStorage.getItem("score") +"." + "<br><br>";
+    var form = document.createElement("form");
+    submit.appendChild(form);
+    form.innerHTML = enterInitials;
     
 }
 
+function viewScore(){
+    
+}
+
+// var score = localStorage.getItem("score");
+
+startQuiz();
 
 
 // part 4) Entering initials into final score and being able to retrieve them after refresh
+
+var enterInitials = 
+    '<form> <div class="form-row align-items-center"> <div class="col-md-6 my-1"> <label class="sr-only" for="inlineFormInputName">Name</label> <input type="text" class="form-control" id="inlineFormInputName" placeholder="Enter Initals"> </div> <div class="col-auto my-1"> </div> <div class="col-auto my-1"> <button type="submit" class="btn btn-primary">Submit</button> </div> </div> </form>'
