@@ -9,6 +9,8 @@ var submit = document.querySelector(".submit");
 var index = 0;
 var score = 0;
 var highScoresLinkEl = document.querySelector(".highScoresLink");
+var storedScores=[]
+var redyToSave=[]
 
 // localStorage.setItem("score", score);
 
@@ -98,7 +100,7 @@ function timer() {
     if (timeRemaining <= 0) {
       clearInterval(timerInterval);
       timerEl.textContent = "Time's up!";
-      enterScore();
+    //   enterScore();
     }
   }, 1000);
 }
@@ -128,13 +130,12 @@ function insertQuestion() {
   console.log("questionsArray.length is " + questionsArray.length);
   console.log("-------------");
 
-  correctAnswer();
+//   correctAnswer();
+
 
 }
 //Okay, now I have the first question. The next parts required are to 1) listen for the correct button answer 2) store the score 3) loop through series of questions 4)//
-
-function correctAnswer() {
-  buttons.addEventListener("click", function(event) {
+buttons.addEventListener("click", function(event) {
     event.preventDefault();
     console.log("Button selected: " + event.target.textContent);
 
@@ -146,13 +147,16 @@ function correctAnswer() {
       console.log("incorrect answer");
       timeRemaining = timeRemaining - 10;
     }
+    
+
 
     if (index < questionsArray.length - 1) {
         index++;
         insertQuestion();
         // once all the answers are complete, we need to enter our score.
       } else {
-        enterScore;
+          timeRemaining = 0;
+        enterScore();
       }
 
     
@@ -160,6 +164,9 @@ function correctAnswer() {
     console.log("-------------");
 
   });
+
+function correctAnswer() {
+ 
 
   return;
 }
@@ -178,35 +185,65 @@ function enterScore() {
 //  Insert a Bootstap form that is defined as "enterInitials" (defined at bottom) in the empty <form> element predefined in HTML.
   form.innerHTML = enterInitials;
 // variable set to identify where the Submit button is
-  var initialsButton=document.querySelector(".initialButton")
+  var initialsButton=document.querySelector(".initialButton");
 
-
-  
     //   define what the user enters into the form
-      var userInitials=document.querySelector(".initInput").value
-      console.log(userInitials); //spot check
+     
+      
+      
     //Store the variables into an array
-      var userScore=[
-          userInitials,
-          score
-      ]
-      //Stringify!
-      localStorage.setItem("user,score", JSON.stringify(userScore))
+    
+     
     //   When clicking submit
       initialsButton.addEventListener("click",function(event){
-      event.preventDefault() //make sure not to refresh
+
+           //Stringify!
+           event.preventDefault() //make sure not to refresh
+           if(localStorage.getItem("user,score") !==null){
+
+               storedScores=JSON.parse(localStorage.getItem("user,score"));
+           }
+          
+           if(storedScores.length>0){
+
+               for(var b=0;b<storedScores.length;b++){
+                   redyToSave.push(storedScores[b])
+               }
+           }
+
+        //    console.log(redyToSave);
+
+           var userInitials=document.querySelector(".initInput").value
+           var userScore=
+               {userInitials,
+               score}
+           
+            redyToSave.push(userScore)
+
+            
+            localStorage.setItem("user,score", JSON.stringify(redyToSave))
+
       viewScore();
 
   })
 }
 
 function viewScore() {
+    console.log(redyToSave);
+    
   container.innerHTML = "<h2>High Scores!</h2><br>";
-  var scoreList = document.createElement("div");
-  scoreList.textContent = "Scores go here";
-  container.appendChild(scoreList);
+  for(var t=0;t<redyToSave.length;t++){
+      var scoreList = document.createElement("div");
+    //   var scoreList2 = document.createElement("div");
+      scoreList.textContent ="Initials= "+ redyToSave[t].userInitials + "Score = "+ redyToSave[t].score;
+    //   scoreList2.textContent = redyToSave[t].score;
 
-  userInitials.innerHTML = JSON.parse(localStorage.getItem("user,score"));
+
+      container.appendChild(scoreList);
+    //   container.appendChild(scoreList2);
+  }
+
+//   buttons.innerHTML = JSON.parse(localStorage.getItem("user,score"));
   
 
 //   var newButtons = document.createElement("div");
