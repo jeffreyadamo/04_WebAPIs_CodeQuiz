@@ -9,8 +9,10 @@ var submit = document.querySelector(".submit");
 var index = 0;
 var score = 0;
 var highScoresLinkEl = document.querySelector(".highScoresLink");
-var storedScores=[]
-var redyToSave=[]
+var storedScores = [];
+var readyToSave = [];
+var form = document.querySelector(".submitForm");
+var clear = document.querySelector(".clear");
 
 // localStorage.setItem("score", score);
 
@@ -100,7 +102,7 @@ function timer() {
     if (timeRemaining <= 0) {
       clearInterval(timerInterval);
       timerEl.textContent = "Time's up!";
-    //   enterScore();
+      //   enterScore();
     }
   }, 1000);
 }
@@ -116,150 +118,128 @@ function insertQuestion() {
   container.innerHTML = "<h2>" + questionsArray[index].question + "</h2>";
   container.style.textAlign = "left";
 
-//   Create a for loop to populate the answers in a button within their appropriate "answers" <div> defined in the HTML; children of the "buttons" <div>:
+  //   Create a for loop to populate the answers in a button within their appropriate "answers" <div> defined in the HTML; children of the "buttons" <div>:
   for (var j = 0; j < questionsArray[index].answers.length; j++) {
-    document.querySelector(".answer" + j).innerHTML = "<button type='button' class='btn btn-primary'>" + questionsArray[index].answers[j] + "</button>";
+    document.querySelector(".answer" + j).innerHTML =
+      "<button type='button' class='btn btn-primary'>" +
+      questionsArray[index].answers[j] +
+      "</button>";
   }
-//   document.querySelector(".answer0").innerHTML=questionsArray[index].answers[index]
-//   document.querySelector(".answer1").innerHTML=questionsArray[index].answers[index]
-//   document.querySelector(".answer2").innerHTML=questionsArray[index].answers[index]
-//   document.querySelector(".answer3").innerHTML=questionsArray[index].answers[index]
 
 
   console.log("index after for loop is " + index);
   console.log("questionsArray.length is " + questionsArray.length);
   console.log("-------------");
 
-//   correctAnswer();
-
-
+  //   correctAnswer();
 }
 //Okay, now I have the first question. The next parts required are to 1) listen for the correct button answer 2) store the score 3) loop through series of questions 4)//
 buttons.addEventListener("click", function(event) {
-    event.preventDefault();
-    console.log("Button selected: " + event.target.textContent);
+  event.preventDefault();
+  console.log("Button selected: " + event.target.textContent);
 
-    if (event.target.textContent === questionsArray[index].correctOption) {
-      console.log("correct answer chosen");
-      score = score + 10;
-      console.log("Currect score is: " + score);
-    } else {
-      console.log("incorrect answer");
-      timeRemaining = timeRemaining - 10;
-    }
-    
+  if (event.target.textContent === questionsArray[index].correctOption) {
+    console.log("correct answer chosen");
+    score = score + 10;
+    console.log("Currect score is: " + score);
+  } else {
+    console.log("incorrect answer");
+    timeRemaining = timeRemaining - 10;
+  }
 
+  if (index < questionsArray.length - 1) {
+    index++;
+    insertQuestion();
+    // once all the answers are complete, we need to enter our score.
+  } else {
+    timeRemaining = 0;
+    enterScore();
+  }
 
-    if (index < questionsArray.length - 1) {
-        index++;
-        insertQuestion();
-        // once all the answers are complete, we need to enter our score.
-      } else {
-          timeRemaining = 0;
-        enterScore();
-      }
-
-    
-    console.log("Index after answer is: " + index);
-    console.log("-------------");
-
-  });
+  console.log("Index after answer is: " + index);
+  console.log("-------------");
+});
 
 function correctAnswer() {
- 
-
   return;
 }
 
 function enterScore() {
-    // Replace quiz questions in container with a string 
+  // Replace quiz questions in container with a string
   container.innerHTML = "<h2>All Done!</h2><br>";
-//   Replace quiz answers with a string that shows cumulative score
-  buttons.innerHTML =
-    "Your final score is " + score + "." + "<br><br>";
+  //   Replace quiz answers with a string that shows cumulative score
+  buttons.innerHTML = "Your final score is " + score + "." + "<br><br>";
 
-// create a form that allows the user to enter their initials
+  // create a form that allows the user to enter their initials
   var form = document.createElement("form");
   submit.appendChild(form);
 
-//  Insert a Bootstap form that is defined as "enterInitials" (defined at bottom) in the empty <form> element predefined in HTML.
+  //  Insert a Bootstap form that is defined as "enterInitials" (defined at bottom) in the empty <form> element predefined in HTML.
   form.innerHTML = enterInitials;
-// variable set to identify where the Submit button is
-  var initialsButton=document.querySelector(".initialButton");
+  // variable set to identify where the Submit button is
+  var initialsButton = document.querySelector(".initialButton");
 
-    //   define what the user enters into the form
-     
-      
-      
-    //Store the variables into an array
-    
-     
-    //   When clicking submit
-      initialsButton.addEventListener("click",function(event){
+  //   define what the user enters into the form
 
-           //Stringify!
-           event.preventDefault() //make sure not to refresh
-           if(localStorage.getItem("user,score") !==null){
+  //Store the variables into an array
 
-               storedScores=JSON.parse(localStorage.getItem("user,score"));
-           }
-          
-           if(storedScores.length>0){
+  //   When clicking submit
+  initialsButton.addEventListener("click", function(event) {
+    //Stringify!
+    event.preventDefault(); //make sure not to refresh
+    if (localStorage.getItem("user,score") !== null) {
+      storedScores = JSON.parse(localStorage.getItem("user,score"));
+    }
 
-               for(var b=0;b<storedScores.length;b++){
-                   redyToSave.push(storedScores[b])
-               }
-           }
+    if (storedScores.length > 0) {
+      for (var b = 0; b < storedScores.length; b++) {
+        readyToSave.push(storedScores[b]);
+      }
+    }
 
-        //    console.log(redyToSave);
+    //    console.log(readyToSave);
 
-           var userInitials=document.querySelector(".initInput").value
-           var userScore=
-               {userInitials,
-               score}
-           
-            redyToSave.push(userScore)
+    var userInitials = document.querySelector(".initInput").value;
+    var userScore = { userInitials, score };
 
-            
-            localStorage.setItem("user,score", JSON.stringify(redyToSave))
+    readyToSave.push(userScore);
 
-      viewScore();
+    localStorage.setItem("user,score", JSON.stringify(readyToSave));
 
-  })
+    viewScore();
+  });
 }
 
 function viewScore() {
-    console.log(redyToSave);
-    
+  console.log(readyToSave);
   container.innerHTML = "<h2>High Scores!</h2><br>";
-  for(var t=0;t<redyToSave.length;t++){
-      var scoreList = document.createElement("div");
+  for (var t = 0; t < readyToSave.length; t++) {
+    var scoreList = document.createElement("div");
     //   var scoreList2 = document.createElement("div");
-      scoreList.textContent ="Initials= "+ redyToSave[t].userInitials + "Score = "+ redyToSave[t].score;
-    //   scoreList2.textContent = redyToSave[t].score;
-
-
-      container.appendChild(scoreList);
-    //   container.appendChild(scoreList2);
+    scoreList.textContent =
+      "Player: " +
+      readyToSave[t].userInitials +
+      "-----------------------------" +
+      "   Score: " +
+      readyToSave[t].score;
+    container.appendChild(scoreList);
   }
-
-//   buttons.innerHTML = JSON.parse(localStorage.getItem("user,score"));
+  buttons.innerHTML = "<button type='button' class='btn btn-primary'>" + "Clear Scores" +
+  "</button>";
   
-
-//   var newButtons = document.createElement("div");
-//   newButtons.className = "newButtons";
-//   (newButtons.innerHTML =
-//     "<button type='button' class='btn btn-primary'>Go Back</button>"),
-//     "<button type='button' class='btn btn-primary'>Go Back</button>";
-//   buttons.appendChild(newButtons);
+  form.innerHTML = "<div></div>";
 }
+
+
+clear.addEventListener("click", function(event) {
+    event.preventDefault();
+    localStorage.clear();
+})
 
 highScoresLinkEl.addEventListener("click", function(event) {
   event.preventDefault();
   viewScore();
 });
-
-// var score = localStorage.getItem("score");
 
 startQuiz();
 
@@ -267,4 +247,3 @@ startQuiz();
 
 var enterInitials =
   '<form> <div class="form-row align-items-center"> <div class="col-md-6 my-1"> <label class="sr-only" for="inlineFormInputName">Name</label> <input type="text" class="form-control initInput" id="inlineFormInputName" placeholder="Enter Initals"> </div> <div class="col-auto my-1"> </div> <div class="col-auto my-1"> <button type="submit" class="btn btn-primary initialButton">Submit</button> </div> </div> </form>';
-

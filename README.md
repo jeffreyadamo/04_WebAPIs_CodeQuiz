@@ -80,5 +80,70 @@ GIVEN I am taking a code quiz
 
     Create a function that uses API to store local info for initials and score. Use setinfo and getinfo.
     
-```
+
+# What Actually Happened...
+
+It went well for a while...
+
+## HTML:
+ I recreated the HTML very simply. There is a header with a link directing to "View High Scores" and a Timer. We've got a nice landing page with a button directing the user to Start Quiz. I've created some empty div elements that will be populated by the JS.
+
+ ## CSS: 
+ Very boring. Basically, just making sure things are nice and centered, but the text is aligned left when the questions start. 
+
+ ## JavaScript:
+
+ Variables are set at the beginning when possible. I used querySelector when possible to not confuse myself unnecessarily. The most exciting one here is "questionsArray" array. I was able to consolidate this to include "questions", "answers", and "correctOption" as objects to reference later.
+
+ There are prolific notes when possible. I had issues, so this was a coping mechanism for me to try and isolate bugs and reexamine what did what.
+
+## Functions:
+
+### startQuiz(): 
+uses addEventListener on the Start Quiz button to initialize the quiz. Leads to next functions:
+
+### timer(): 
+uses setInterval to begin the the timer with a countdown using "timerRemaining--". Makes sure to not run negative with "clearInterval" and then displays the user if time is up.
+
+### insertQuestion(): 
+uses "questionsArray" to innerHTML the container with questions using "questionsArray[index].question". I used a for loop to innerHTML the questions. Use of [index] determines which set of questions and answers populate.
+
+## I had a HUGE bug that took a day and a half and 2 tutor sessions to repair:
+
+I had insertQuestions() direct to another function correctAnswers() which held a "addEventListener" method that goes through the process of determining which button is the right answer. It resulted in a doubling back to insertQuestions(), so every click went from index = 1,2,4.... It was not awesome. This was finally corrected by throwing the event handler outside of any function so it didn't cycle back and forth. 
+### Unfortunately, this took away from a lot of my ability to spend time on the rest of the STORAGE HANDLING parts, so they're kind of a mess.
+
+In the event handler for the answers, I used if/else statements to determine if the button selected (using event.target.textContent) was equal to the questionsArray[index].correctOption property. A 10 second penalty is assigned if incorrect.
+
+The index is then then bumped up using index++ and if less than questionsArray.length, directed back to insertQuestion(), otherwise we direct the user to enterScore()
+
+
+### enterScore()
+
+uses innerHTML to write over the questions and answers. It utilizes a Bootstrap form which is a bunch of poorly formatted HTML defined at the bottom to get that mess out of the way. 
+
+I used another event handler (more and more annoying, jQuery please!). Getting the local storage bit was tricky for me (running out of time!). I need to review this part more and will clean it up when I have more time.
+
+I had to create a number of variables to hold the score and user information. I used "storedScores" as an array and pushed them to Local Storage once it was defined using and if statment with !==null. I also used a for loop to push the userScore to "readytoSave". 
+
+I'd like more time to clean this aspect up. 
+
+## function viewScore() is incomplete
+
+After the end of the quiz, the user is able to enter their initials, which the "Submit" button changes the innerHTML of the container to a "High Scores" header and will list out the saved scores using a for loop draving from "readyToSave. 
+
+Items needing repair:
+* List needs formatting
+* Clear button does not work - tried assigning it to "localStorage.clear();", but to no avail
+* Submit form and button from previous funciton still present - hell breaks loose when you click that thing
+* no reset present
+* On the opening page, when click "View High Scores" it is directed to go to the function viewScores(), but only the h2 tag text shows up. No scores? 
+
+
+
+
+
+
+
+
 
